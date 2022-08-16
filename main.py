@@ -1,6 +1,6 @@
 import csv
 import time
-from getters import *  # Importing all of functions from our library getters.py
+from getters import *
 
 start = time.time()
 # Nom du fichier horodate
