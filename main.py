@@ -23,7 +23,5 @@ with open(filename, 'w+', newline='') as f:
             row.append(getData(field))
         file.writerow(row)
 
-
-
 end = time.time()
 print(end - start)
