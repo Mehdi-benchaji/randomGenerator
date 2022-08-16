@@ -27,4 +27,4 @@ key=getsection()
 keys = getkeys()
 vl = getvalues(key[0],keys[0])
 
-print(key)
+print(keys)
