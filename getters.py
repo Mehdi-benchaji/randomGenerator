@@ -1,14 +1,13 @@
 import random
 import datetime
 import time
-import decimal
 import os
-from configparser import ConfigParser
+import configparser
 
 # le chemin absolu du fichier
 absPath = os.path.dirname(os.path.realpath(__file__))
 configFile = os.path.join(absPath, 'config.conf')
-data = ConfigParser()
+data = configparser.ConfigParser()
 # charger le fichier de conf
 data.read(configFile)
 
@@ -18,7 +17,6 @@ def getFileInfo(undersection):
     return field
 
 # Fonctions pour la conversion des types
-
 def date(year):
     sdate = datetime.date(int(year),1,1)
     # generer les timestamps
@@ -26,7 +24,30 @@ def date(year):
 
 # retourner une liste du type souhaite
 def convertTo(inData, dtype):
-    return [dtype(x) for x in inData.split()]
+    return [dtype(x) for x in inData.split("-")]
+# obtenir un entier aleatoire
+def getRandomInt(intSet,form=""):
+    start , end = convertTo(intSet, int)
+    return random.randint(start, end)
+# obtenir un double aleatoire
+def getRandomDouble(intSet,form=""):
+    start, end = convertTo(intSet, float)
+    randomDouble = lambda x, y: random.uniform(x, y)
+    return round(randomDouble(start, end), 1)
+# string aleatoire
+def getRandomString(intSet,form=""):
+    strings = convertTo(intSet, str)
+    return random.choice(strings)
+
+def getRandomBool(intSet,form=""):
+    boolean = convertTo(intSet, str)
+    return random.choice(boolean)
+
+# decimal aleatoire
+def getRandomDecimal(inDecimals,form=""):
+    start , end = convertTo(inDecimals, float)
+    randomDecimal = lambda x,y : random.uniform(x,y)
+    return round(randomDecimal(start, end), 2)
 
 # retourner une date aleatoire entre 2 annees (ex: entre 2002 et 2021)
 def getRandomDate(dateTime,form=""):
@@ -34,25 +55,6 @@ def getRandomDate(dateTime,form=""):
     randomDate =random.randint(start, end)
     return datetime.datetime.fromtimestamp(randomDate).strftime(form)
 
-# obtenir un entier aleatoire
-def getRandomInt(intSet,form=""):
-    start , end = convertTo(intSet, int)
-    return random.randint(start, end)
-
-# list aleatoire
-def getRandomSample(inSet, number=2,form=""):
-    return random.sample(inSet.split(), number)
-
-# string aleatoire
-def getRandomString(intSet,form=""):
-    strings = convertTo(intSet, str)
-    return random.choice(strings)
-
-# decimal aleatoire
-def getRandomDecimal(inDecimals, form=""):
-    start , end = convertTo(inDecimals, int)
-    randomDecimal = lambda x,y : float(decimal.Decimal(random.randrange(x,y))/100)
-    return randomDecimal(start, end)
 
 # timestamp aleatoire
 def getTimestamp(dateTime,form=""):
@@ -60,20 +62,28 @@ def getTimestamp(dateTime,form=""):
     randomDate =random.randint(start, end)
     return datetime.datetime.fromtimestamp(randomDate).strftime(form)
 
-
 # les types possibles
-dataTypes = {'int': getRandomInt,
+dataTypes = {
+             'int': getRandomInt,
              'string': getRandomString,
+             'boolean':getRandomBool,
              'timestamp': getTimestamp,
+             'double':getRandomDouble,
              'decimal': getRandomDecimal,
-             "datetime": getRandomDate,
-             'list': getRandomSample
+             "datetime": getRandomDate
              }
-
+def getkeys(section):
+    vals = []
+    for key in dict(data.items(section)):
+            vals.append(key)
+    return vals
+def getvalues(section,key):
+    nom=data[section][key].split(",")
+    return nom
 # fonction pour obtenir/generer les ranges
 def getData(fieldname):
-    field = data[fieldname]
-    dtype = field['type']
+    field = getvalues("colonnes",fieldname)
+    dtype = field[0]
     if dtype in dataTypes:
-        return dataTypes[dtype](field['values'],form=field['format'])
-    return field['values']
+        return dataTypes[dtype](field[2],form=field[1])
+    return field[2]
