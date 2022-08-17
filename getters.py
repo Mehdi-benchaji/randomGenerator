@@ -3,6 +3,9 @@ import datetime
 import time
 import os
 import configparser
+from dict import dictionnaire
+import re
+import sys
 
 # le chemin absolu du fichier
 absPath = os.path.dirname(os.path.realpath(__file__))
@@ -26,79 +29,88 @@ def date(year):
 
 
 # retourner une liste du type souhaite
-def convertTo(inData, dtype):
-    return [dtype(x) for x in inData.split("-")]
-
-
+def typeapproved(inData, dtype):
+    da=inData.split("-")
+    i=0
+    y=[]
+    for x in da:
+        if re.search(dictionnaire[dtype], x):
+            y.append(x)
+        else:
+            y=print("valeur",i+1,"est incorrecte veuillez saisir un",dtype)
+        i=i+1
+    return y
 # obtenir un entier aleatoire
 def getRandomInt(intSet, form=""):
-    start, end = convertTo(intSet, int)
-    return random.randint(start, end)
-
-
+    try:
+        i=typeapproved(intSet,"int")
+        start=i[0]
+        end=i[1]
+        return random.randint(int(start), int(end))
+    except:
+        sys.exit("erreur")
+'''print(getRandomInt("12-14",""))'''
 # obtenir un double aleatoire
 def getRandomFloat(intSet, form=""):
-    start, end = convertTo(intSet, float)
-    randomDouble = lambda x, y: random.uniform(x, y)
-    return randomDouble(start, end)
-
+    try:
+        i = typeapproved(intSet, "float")
+        start = i[0]
+        end = i[1]
+        randomDouble = lambda x, y: random.uniform(x, y)
+        return randomDouble(float(start), float(end))
+    except:
+        sys.exit("erreur")
 
 # string aleatoire
 def getRandomString(intSet, form=""):
-    strings = convertTo(intSet, str)
-    return random.choice(strings)
-
-
-def getRandomBool(intSet, form=""):
-    boolean = convertTo(intSet, str)
-    return random.choice(boolean)
-
-
-# decimal aleatoire
-def getRandomDecimal(inDecimals, form=""):
-    start, end = convertTo(inDecimals, float)
-    randomDecimal = lambda x, y: random.uniform(x, y)
-    return round(randomDecimal(start, end), 2)
-
+    try:
+        strings = typeapproved(intSet, "str")
+        return random.choice(strings)
+    except:
+        sys.exit("erreur")
 
 # retourner une date aleatoire entre 2 annees (ex: entre 2002 et 2021)
 def getRandomDate(dateTime, form=""):
-    start, end = convertTo(dateTime, date)  # date c'est une fonction
-    randomDate = random.randint(start, end)
-    return datetime.datetime.fromtimestamp(randomDate).strftime(form)
+    try:
+        i = typeapproved(dateTime, "datetime")
+        start = i[0]
+        end = i[1]  # date c'est une fonction
+        randomDate = random.randint(int(start), int(end))
+        return datetime.datetime.fromtimestamp(randomDate).strftime(form)
+    except:
+        sys.exit("erreur")
 
 
 def getTimestamp(dateTime, form=""):
-    start, end = convertTo(dateTime, date)  # date c'est une fonction
-    randomDate = random.randint(int(start), int(end))
-    return datetime.datetime.fromtimestamp(randomDate).strftime(form)
-
-'''x = getTimestamp("2000-2001","%d-%m-%Y_%H:%M:%S")
-print(x)'''
-
+    try:
+        i = typeapproved(dateTime, "timestamp")
+        start = i[0]
+        end = i[1]  # date c'est une fonction
+        randomDate = random.randint(int(start), int(end))
+        return datetime.datetime.fromtimestamp(randomDate).strftime(form)
+    except:
+        sys.exit("erreur")
 
 # les types possibles
 dataTypes = {
     'int': getRandomInt,
-    'string': getRandomString,
-    'boolean': getRandomBool,
+    'str': getRandomString,
     'timestamp': getTimestamp,
     'float': getRandomFloat,
     "datetime": getRandomDate
 }
 
-
+# fonction pour obtenir les cles
 def getkeys(section):
     vals = []
     for key in dict(data.items(section)):
         vals.append(key)
     return vals
-
-
+# fonction pour obtenir les vals des cles
 def getvalues(section, key):
     nom = data[section][key].split(",")
     return nom
-
+# fonction pour obtenir les sections
 def getsection():
     vals = []
     for section in data.sections():
@@ -113,3 +125,4 @@ def getData(fieldname):
     if dtype in dataTypes:
         return dataTypes[dtype](field[2], form=field[1])
     return field[2]
+

@@ -9,7 +9,8 @@ fileType = getFileInfo("fileType")
 filename = "%s_%s.%s" % (getFileInfo("genre"), dateFile, fileType)
 
 # les colonnes
-fieldnames=getkeys("colonnes")
+section=getsection()
+fieldnames=getkeys(section[0])
 
 
 maxRecords = int(getFileInfo("maxRecords"))
