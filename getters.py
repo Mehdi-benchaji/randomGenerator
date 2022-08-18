@@ -77,3 +77,9 @@ def getData(fieldname):
     if dtype in dataTypes:
         return dataTypes[dtype](field['values'],form=field['format'])
     return field['values']
+
+sectionName = list(data.sections())
+fieldnames = list(data[sectionName[0]].keys())
+
+
+print(fieldnames)
