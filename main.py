@@ -19,9 +19,12 @@ with open(filename, 'w+', newline='') as f:
     file = csv.writer(f)
     file.writerow(fieldnames)
 
-    for i in range(1, maxRecords):
+    for j in range(0, maxRecords):
         row = []
         for i in range(0,len(fieldnames)):
+            if fieldnames[i]=="id":
+                row.append(int(getData(fieldnames[i]))+j)
+            else:
                 row.append(getData(fieldnames[i]))
         file.writerow(row)
 

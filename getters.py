@@ -13,6 +13,7 @@ configFile = os.path.join(absPath, 'config.conf')
 data = configparser.ConfigParser()
 # charger le fichier de conf
 data.read(configFile)
+maxRecords = data["fileInfos"]["maxRecords"]
 
 
 # fonction pour obtenir les infos sur le fichier
@@ -39,6 +40,12 @@ def typeapproved(inData, dtype):
             y=print("valeur",i+1,"est incorrecte veuillez saisir un",dtype)
         i = i+1
     return y
+
+'''# obtenir un id incrementable
+def getid(num):
+    increment = int(num) + 1
+    return increment'''
+
 # obtenir un entier aleatoire
 def getRandomInt(intSet, form=""):
     try:
@@ -123,4 +130,6 @@ def getData(fieldname):
     if dtype in dataTypes:
         return dataTypes[dtype](field[2], form=field[1])
     return field[2]
+
+
 
