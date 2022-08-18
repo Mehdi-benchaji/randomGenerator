@@ -25,7 +25,4 @@ with open(filename, 'w+', newline='') as f:
                 row.append(getData(fieldnames[i]))
         file.writerow(row)
 
-
-'''
-end = time.time()
-print(end - start)'''
+print("csv généré avec succes")
