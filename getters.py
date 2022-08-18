@@ -30,15 +30,14 @@ def date(year):
 
 # retourner une liste du type souhaite
 def typeapproved(inData, dtype):
-    da=inData.split("-")
-    i=0
-    y=[]
-    for x in da:
+    i = 0
+    y = []
+    for x in inData.split("-"):
         if re.search(dictionnaire[dtype], x):
             y.append(x)
         else:
             y=print("valeur",i+1,"est incorrecte veuillez saisir un",dtype)
-        i=i+1
+        i = i+1
     return y
 # obtenir un entier aleatoire
 def getRandomInt(intSet, form=""):
@@ -49,7 +48,7 @@ def getRandomInt(intSet, form=""):
         return random.randint(int(start), int(end))
     except:
         sys.exit("erreur")
-'''print(getRandomInt("12-14",""))'''
+
 # obtenir un double aleatoire
 def getRandomFloat(intSet, form=""):
     try:
@@ -79,7 +78,6 @@ def getRandomDate(dateTime, form=""):
         return datetime.datetime.fromtimestamp(randomDate).strftime(form)
     except:
         sys.exit("erreur")
-
 
 def getTimestamp(dateTime, form=""):
     try:
