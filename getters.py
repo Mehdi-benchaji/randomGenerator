@@ -24,7 +24,8 @@ def getFileInfo(undersection):
 
 # Fonctions pour la conversion des types
 def date(year):
-    sdate = datetime.date(int(year), 1, 1)
+    y=year.split("/")
+    sdate = datetime.date(int(y[2]),int(y[1]),int(y[0]))
     # generer les timestamps
     return time.mktime(sdate.timetuple())
 
@@ -81,7 +82,7 @@ def getRandomDate(dateTime, form=""):
         i = typeapproved(dateTime, "datetime")
         start = i[0]
         end = i[1]  # date c'est une fonction
-        randomDate = random.randint(int(start), int(end))
+        randomDate = random.randint(int(date(start)), int(date(end)))
         return datetime.datetime.fromtimestamp(randomDate).strftime(form)
     except:
         sys.exit("erreur")
@@ -91,7 +92,7 @@ def getTimestamp(dateTime, form=""):
         i = typeapproved(dateTime, "timestamp")
         start = i[0]
         end = i[1]  # date c'est une fonction
-        randomDate = random.randint(int(start), int(end))
+        randomDate = random.randint(int(date(start)), int(date(end)))
         return datetime.datetime.fromtimestamp(randomDate).strftime(form)
     except:
         sys.exit("erreur")
