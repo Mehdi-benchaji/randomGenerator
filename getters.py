@@ -21,6 +21,7 @@ sectionName = list(data.sections())
 # les sous sections de la première section
 fieldnames = list(data[sectionName[0]].keys())
 
+
 #verifier les patterns du conf values à partir du dict
 def regex_checker(val, dtype):
     if dtype in DICTIONNAIRE:
@@ -86,6 +87,18 @@ def getTimestamp(val,form=""):
 def getRandomSample(val, number=2,form=""):
     return random.sample(val.split(), number)
 
+currentId = 0
+
+if 'id' in data[sectionName[0]]:
+    currentId = data[sectionName[0]]['id'].split(',')[2]
+    currentId = int(currentId) - 1
+else:
+    raise ValueError('id structure is wrong')
+
+def getCurrentId(inData,form=""):
+    global currentId
+    currentId += 1
+    return currentId
 
 # les types possibles
 dataTypes = {'int': getRandomInt,
@@ -95,6 +108,7 @@ dataTypes = {'int': getRandomInt,
              "datetime": getRandomDate,
              'list': getRandomSample,
              'boolean': getRandomString, # Vu que ca contient yes/no
+             'id':getCurrentId,
              }
 
 # fonction pour obtenir/generer les ranges
