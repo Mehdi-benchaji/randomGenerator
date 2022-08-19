@@ -65,6 +65,10 @@ def getRandomString(val,form=""):
     strings = convertTo(val, str)
     return random.choice(strings)
 
+def getRandomBoolean(val,form=""):
+    strings = convertTo(val, str, 2)
+    return random.choice(strings)
+
 def date(d):
     day, month, year = d.split("/")
     sdate = datetime.date(int(year),int(month),int(day))
@@ -74,7 +78,9 @@ def date(d):
 # retourner une date aleatoire
 def getRandomDate(val,form=""):
     start , end = convertTo(val, date, 2)
+    #print(start, end)
     randomDate =random.randint(start, end)
+    #print(randomDate)
     return datetime.datetime.fromtimestamp(randomDate).strftime(form)
 
 # timestamp aleatoire
@@ -82,10 +88,6 @@ def getTimestamp(val,form=""):
     start, end = convertTo(val, date, 2)
     randomDate = random.randint(int(start), int(end))
     return datetime.datetime.fromtimestamp(randomDate).strftime(form)
-
-# list aleatoire
-def getRandomSample(val, number=2,form=""):
-    return random.sample(val.split(), number)
 
 currentId = 0
 
@@ -106,8 +108,7 @@ dataTypes = {'int': getRandomInt,
              'float': getRandomFloat,
              'timestamp': getTimestamp,
              "datetime": getRandomDate,
-             'list': getRandomSample,
-             'boolean': getRandomString, # Vu que ca contient yes/no
+             'boolean': getRandomBoolean, # Vu que ca contient yes/no
              'id':getCurrentId,
              }
 

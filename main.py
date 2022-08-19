@@ -17,7 +17,7 @@ with open(filename, 'w', newline ='') as f:
     file = csv.writer(f)
     file.writerow(fieldnames)
     try:
-        for i in range (1,maxRecords) :
+        for i in range (0,maxRecords+1) :
             row = []
             for field in fieldnames:
                 row.append(getData(field))
