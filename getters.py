@@ -5,6 +5,7 @@ import os
 import re
 from configparser import ConfigParser
 from dict import DICTIONNAIRE
+import sys
 
 #TYPE, FORMAT, VALUES = 0,1,2
 
@@ -78,9 +79,7 @@ def date(d):
 # retourner une date aleatoire
 def getRandomDate(val,form=""):
     start , end = convertTo(val, date, 2)
-    #print(start, end)
     randomDate =random.randint(start, end)
-    #print(randomDate)
     return datetime.datetime.fromtimestamp(randomDate).strftime(form)
 
 # timestamp aleatoire
@@ -92,10 +91,11 @@ def getTimestamp(val,form=""):
 currentId = 0
 
 if 'id' in data[sectionName[0]]:
-    currentId = data[sectionName[0]]['id'].split(',')[2]
-    currentId = int(currentId) - 1
-else:
-    raise ValueError('id structure is wrong')
+    try:
+        currentId = data[sectionName[0]]['id'].split(',')[2]
+        currentId = int(currentId) - 1
+    except:
+        sys.exit('id structure is wrong')
 
 def getCurrentId(inData,form=""):
     global currentId
