@@ -1,9 +1,11 @@
 import csv
 import time
-from getters import *  # Importing all of functions from our library getters.py
+from getters import * # Importing all of functions from our library getters.py
+import os
+import traceback
 
-'''start = time.time()'''
-# Nom du fichier horodate
+start = time.time()
+# Nom du fichier horodaté
 dateFile = time.strftime(getFileInfo("dateFormat"))
 fileType = getFileInfo("fileType")
 filename = "%s_%s.%s" % (getFileInfo("genre"), dateFile, fileType)
@@ -28,4 +30,5 @@ with open(filename, 'w+', newline='') as f:
                 row.append(getData(fieldnames[i]))
         file.writerow(row)
 
-print("csv généré avec succes")
+end = time.time()
+print("CSV généré en "+ str(end - start) +" secondes")
