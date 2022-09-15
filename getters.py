@@ -15,7 +15,22 @@ data = configparser.ConfigParser()
 data.read(configFile)
 maxRecords = data["fileInfos"]["maxRecords"]
 
-
+# fonction pour obtenir les cles
+def getkeys(section):
+    vals = []
+    for key in dict(data.items(section)):
+        vals.append(key)
+    return vals
+# fonction pour obtenir les vals des cles
+def getvalues(section, key):
+    nom = data[section][key].split(",")
+    return nom
+# fonction pour obtenir les sections
+def getsection():
+    vals = []
+    for section in data.sections():
+            vals.append(section)
+    return vals
 # fonction pour obtenir les infos sur le fichier
 def getFileInfo(undersection):
     field = data['fileInfos'][undersection]
@@ -31,6 +46,7 @@ def date(year):
 def getRandomPhone(val,form=""):
     ph_no = []
     # the first number should be in the range of 6 to 7
+    ph_no.append("+212")
     ph_no.append(random.randint(6, 7))
     # the for loop is used to append the other 9 numbers.
     # the other 9 numbers can be in the range of 0 to 9.
@@ -52,10 +68,20 @@ def typeapproved(inData, dtype):
         i = i+1
     return y
 
-'''# obtenir un id incrementable
-def getid(num):
-    increment = int(num) + 1
-    return increment'''
+currentId = 0
+sectionName=getsection()
+if 'autoicrement' in data[sectionName[0]]:
+    try:
+        currentId = data[sectionName[0]]['autoicrement'].split(',')[2]
+        currentId = int(currentId) - 1
+    except:
+        sys.exit('autoicrement structure is wrong')
+
+def getCurrentId(inData,form=""):
+    global currentId
+    currentId += 1
+    return currentId
+
 
 # obtenir un entier aleatoire
 def getRandomInt(intSet, form=""):
@@ -121,24 +147,11 @@ dataTypes = {
     'float': getRandomFloat,
     "datetime": getRandomDate,
     "bool":getRandomBoolean,
-    "num":getRandomPhone}
+    "mdn":getRandomPhone,
+    "autoicrement":getCurrentId
+}
 
-# fonction pour obtenir les cles
-def getkeys(section):
-    vals = []
-    for key in dict(data.items(section)):
-        vals.append(key)
-    return vals
-# fonction pour obtenir les vals des cles
-def getvalues(section, key):
-    nom = data[section][key].split(",")
-    return nom
-# fonction pour obtenir les sections
-def getsection():
-    vals = []
-    for section in data.sections():
-            vals.append(section)
-    return vals
+
 
 # fonction pour obtenir/generer les ranges
 def getData(fieldname):

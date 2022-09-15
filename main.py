@@ -8,7 +8,8 @@ start = time.time()
 # Nom du fichier horodaté
 dateFile = time.strftime(getFileInfo("dateFormat"))
 fileType = getFileInfo("fileType")
-filename = "%s_%s.%s" % (getFileInfo("genre"), dateFile, fileType)
+path=getFileInfo("path")
+filename = "%s\%s_%s.%s" % (path,getFileInfo("genre"), dateFile, fileType)
 
 # les colonnes
 section=getsection()
@@ -24,10 +25,7 @@ with open(filename, 'w+', newline='') as f:
     for j in range(0, maxRecords):
         row = []
         for i in range(0,len(fieldnames)):
-            if fieldnames[i]=="id":
-                row.append(int(getData(fieldnames[i]))+j)
-            else:
-                row.append(getData(fieldnames[i]))
+            row.append(getData(fieldnames[i]))
         file.writerow(row)
 
 end = time.time()
